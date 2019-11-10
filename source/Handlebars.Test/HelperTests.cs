@@ -432,7 +432,7 @@ namespace HandlebarsDotNet.Test
         {
             var source = "{{literalHelper Bool=true Integer=1 String=\"abc\"}}";
 
-            Handlebars.RegisterHelper("literalHelper", (writer, context, arguments) => {
+            Handlebars.RegisterHelper("literalHelper", (writer, root, context, arguments) => {
                 var parameters = arguments[0] as IDictionary<string, object>;
                 Assert.IsType<bool>(parameters["Bool"]);
                 Assert.IsType<int>(parameters["Integer"]);
@@ -455,7 +455,7 @@ namespace HandlebarsDotNet.Test
         {
             var source = "{{literalHelper true 1 \"abc\"}}";
 
-            Handlebars.RegisterHelper("literalHelper", (writer, context, arguments) => {
+            Handlebars.RegisterHelper("literalHelper", (writer, root, context, arguments) => {
                 Assert.IsType<bool>(arguments[0]);
                 Assert.IsType<int>(arguments[1]);
                 Assert.IsType<string>(arguments[2]);

@@ -665,7 +665,7 @@ false
         [Fact]
         public void BasicHelper()
         {
-            Handlebars.RegisterHelper("link_to", (writer, root, context, parameters) => {
+            Handlebars.RegisterHelper("link_to", (writer, root, context, parameters) => 
             {
                 writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
             });
@@ -691,7 +691,6 @@ false
 
             var template = Handlebars.Compile(source);
 
-            {
             var data = new
             {
                 url = "https://github.com/rexm/handlebars.net",
@@ -1366,7 +1365,7 @@ false
         {
             // Arrange
             IHandlebars handlebars = Handlebars.Create();
-            handlebars.RegisterHelper("foo", (writer, context, arguments) => { });
+            handlebars.RegisterHelper("foo", (writer, root, context, arguments) => { });
             var compile = handlebars.Compile(@"{{foo bar}}");
             var mock = new MockDictionaryImplicitlyImplemented(new Dictionary<string, object> { { "bar", 1 } });
 
