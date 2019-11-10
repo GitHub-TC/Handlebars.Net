@@ -83,7 +83,8 @@ var result = template(data);
 ### Registering Helpers
 
 ```c#
-Handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
+Handlebars.RegisterHelper("link_to", (writer, root, context, parameters) => {
+  // root is the root data from the compiled function call           
   writer.WriteSafeString("<a href='" + context.url + "'>" + context.text + "</a>");
 });
 
@@ -114,11 +115,12 @@ Views\{Controller}\{Action}\partials\somepartial.hbs
 ### Registering Block Helpers
 
 ```c#
-HandlebarsBlockHelper _stringEqualityBlockHelper = (TextWriter output, HelperOptions options, dynamic context, object[] arguments) => {
+HandlebarsBlockHelper _stringEqualityBlockHelper = (TextWriter output, object root, HelperOptions options, dynamic context, object[] arguments) => {
 	if (arguments.Length != 2)
 	{
 		throw new HandlebarsException("{{StringEqualityBlockHelper}} helper must have exactly two argument");
 	}
+    // root is the root data from the compiled function call           
 	string left = arguments[0] as string;
 	string right = arguments[1] as string;
 	if (left == right)
