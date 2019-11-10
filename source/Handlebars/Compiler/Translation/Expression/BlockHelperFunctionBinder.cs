@@ -47,6 +47,9 @@ namespace HandlebarsDotNet.Compiler
                 Expression.Property(
                     CompilationContext.BindingContext,
                     typeof(BindingContext).GetProperty("TextWriter")),
+                Expression.Property(
+                    CompilationContext.BindingContext,
+                    typeof(BindingContext).GetProperty("Root")),
                 Expression.New(
                         typeof(HelperOptions).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0],
                         body,

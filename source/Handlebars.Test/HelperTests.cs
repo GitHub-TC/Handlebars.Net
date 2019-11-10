@@ -10,7 +10,7 @@ namespace HandlebarsDotNet.Test
         [Fact]
         public void HelperWithLiteralArguments()
         {
-            Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
+            Handlebars.RegisterHelper("myHelper", (writer, root, context, args) => {
                 var count = 0;
                 foreach(var arg in args)
                 {
@@ -33,7 +33,7 @@ namespace HandlebarsDotNet.Test
         public void HelperWithLiteralArgumentsWithQuotes()
         {
             var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(helperName, (writer, root, context, args) => {
                 var count = 0;
                 foreach(var arg in args)
                 {
@@ -110,17 +110,6 @@ namespace HandlebarsDotNet.Test
         {
             var source = "{{#ifCond arg1 arg2}}Args are same{{else}}Args are not same{{/ifCond}}";
 
-            Handlebars.RegisterHelper("ifCond", (writer, options, context, arguments) => {
-                if(arguments[0] == arguments[1])
-                {
-                    options.Template(writer, (object)context);
-                }
-                else
-                {
-                    options.Inverse(writer, (object)context);
-                }
-            });
-
             var dataWithSameValues = new
                 {
                     arg1 = "a",
@@ -131,6 +120,19 @@ namespace HandlebarsDotNet.Test
                     arg1 = "a",
                     arg2 = "b"
                 };
+
+            Handlebars.RegisterHelper("ifCond", (writer, root, options, context, arguments) => {
+                Assert.True(root == dataWithSameValues || root == dataWithDifferentValues);
+
+                if(arguments[0] == arguments[1])
+                {
+                    options.Template(writer, (object)context);
+                }
+                else
+                {
+                    options.Inverse(writer, (object)context);
+                }
+            });
 
             var template = Handlebars.Compile(source);
 
@@ -146,7 +148,7 @@ namespace HandlebarsDotNet.Test
         [Fact]
         public void BlockHelperWithArbitraryInversionAndComplexOperator()
         {
-            Handlebars.RegisterHelper("ifCond", (writer, options, context, args) => {
+            Handlebars.RegisterHelper("ifCond", (writer, root, options, context, args) => {
                 if (args.Length != 3)
                 {
                     writer.Write("ifCond:Wrong number of arguments");
@@ -317,7 +319,7 @@ namespace HandlebarsDotNet.Test
         [Fact]
         public void HelperWithNumericArguments()
         {
-            Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
+            Handlebars.RegisterHelper("myHelper", (writer, root, context, args) => {
                 var count = 0;
                 foreach(var arg in args)
                 {
@@ -339,7 +341,7 @@ namespace HandlebarsDotNet.Test
         [Fact]
         public void HelperWithHashArgument()
         {
-            Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
+            Handlebars.RegisterHelper("myHelper", (writer, root, context, args) => {
                 var hash = args[2] as Dictionary<string, object>;
                 foreach(var item in hash)
                 {
@@ -361,7 +363,7 @@ namespace HandlebarsDotNet.Test
         [Fact]
         public void BlockHelperWithSubExpression()
         {
-            Handlebars.RegisterHelper("isEqual", (writer, context, args) =>
+            Handlebars.RegisterHelper("isEqual", (writer, root, context, args) =>
             {
                 writer.WriteSafeString(args[0].ToString() == args[1].ToString() ? "true" : null);
             });
@@ -382,7 +384,7 @@ namespace HandlebarsDotNet.Test
         [Fact]
         public void HelperWithSegmentLiteralArguments()
         {
-            Handlebars.RegisterHelper("myHelper", (writer, context, args) => {
+            Handlebars.RegisterHelper("myHelper", (writer, root, context, args) => {
                 var count = 0;
                 foreach (var arg in args)
                 {
@@ -411,7 +413,7 @@ namespace HandlebarsDotNet.Test
         {
             var source = "{{#ifCond}}{{else}}Inverse{{/ifCond}}";
 
-            Handlebars.RegisterHelper("ifCond", (writer, options, context, arguments) => {
+            Handlebars.RegisterHelper("ifCond", (writer, root, options, context, arguments) => {
                 options.Inverse(writer, (object)context);
             });
 

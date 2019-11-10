@@ -649,7 +649,7 @@ false
         [Fact]
         public void BasicHelper()
         {
-            Handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
+            Handlebars.RegisterHelper("link_to", (writer, root, context, parameters) => {
                 writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
             });
 
@@ -673,14 +673,15 @@ false
 
 			var template = Handlebars.Compile(source);
 
-			Handlebars.RegisterHelper("link_to_post_reg", (writer, context, parameters) => {
-				writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
-			});
-
 			var data = new {
 				url = "https://github.com/rexm/handlebars.net",
 				text = "Handlebars.Net"
 			};
+
+			Handlebars.RegisterHelper("link_to_post_reg", (writer, root, context, parameters) => {
+                Assert.Equal(data, root);
+				writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
+			});
 
 			var result = template(data);
 
@@ -976,7 +977,7 @@ false
             string source = "{{eval 2  3}}";
 
             Handlebars.RegisterHelper("eval",
-                (writer, context, args) => writer.Write("{0} {1}", args[0], args[1]));
+                (writer, root, context, args) => writer.Write("{0} {1}", args[0], args[1]));
 
             var template = Handlebars.Compile(source);
 
@@ -992,7 +993,7 @@ false
             string source = "{{eval null}}";
 
             Handlebars.RegisterHelper("eval",
-                (writer, context, args) => writer.Write(args[0] == null));
+                (writer, root, context, args) => writer.Write(args[0] == null));
 
             var template = Handlebars.Compile(source);
 
@@ -1008,7 +1009,7 @@ false
             var source = @"{{verbatim '{{foo}}'}} something {{verbatim '{{bar}}'}}";
 
             Handlebars.RegisterHelper("verbatim",
-                (writer, context, args) => writer.Write(args[0]));
+                (writer, root, context, args) => writer.Write(args[0]));
 
             var template = Handlebars.Compile(source);
             
@@ -1240,7 +1241,7 @@ false
             
             var source = @"{{#is ProgramID """"}}no program{{/is}}{{#is ProgramID ""1081""}}some program text{{/is}}";
 
-            Handlebars.RegisterHelper("is", (output, options, context, args) =>
+            Handlebars.RegisterHelper("is", (output, root, options, context, args) =>
                 {
                     if(args[0] == args[1])
                     {

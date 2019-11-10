@@ -47,6 +47,13 @@ namespace HandlebarsDotNet.Compiler
                     Expression.Property(
                         CompilationContext.BindingContext,
 #if netstandard
+                        typeof(BindingContext).GetRuntimeProperty("Root")),
+#else
+                        typeof(BindingContext).GetProperty("Root")),
+#endif
+                    Expression.Property(
+                        CompilationContext.BindingContext,
+#if netstandard
                         typeof(BindingContext).GetRuntimeProperty("Value")),
 #else
                         typeof(BindingContext).GetProperty("Value")),
@@ -98,7 +105,7 @@ namespace HandlebarsDotNet.Compiler
             if (CompilationContext.Configuration.Helpers.ContainsKey(helperName))
             {
                 var helper = CompilationContext.Configuration.Helpers[helperName];
-                helper(context.TextWriter, context.Value, arguments.ToArray());
+                helper(context.TextWriter, context.Root, context.Value, arguments.ToArray());
             }
             else
             {

@@ -82,7 +82,7 @@ namespace HandlebarsDotNet.Test
                 }
             };
 
-            Handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
+            Handlebars.RegisterHelper("link_to", (writer, root, context, parameters) => {
                 writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
             });
 
@@ -94,7 +94,7 @@ namespace HandlebarsDotNet.Test
         public void BlockHelperWithSameNameVariable()
         {
             var source = "{{#block_helper}}{{block_helper}}{{/block_helper}}";
-            Handlebars.RegisterHelper("block_helper", (writer, options, context, arguments) =>
+            Handlebars.RegisterHelper("block_helper", (writer, root, options, context, arguments) =>
             {
                 options.Template(writer, context);
             });
@@ -113,7 +113,7 @@ namespace HandlebarsDotNet.Test
         {
             var source = "{{block_helper}}";
             Handlebars.RegisterHelper("block_helper", (writer, options, context, arguments) => { });
-            Handlebars.RegisterHelper("block_helper", ((output, context, arguments) => { }));
+            Handlebars.RegisterHelper("block_helper", ((output, root, context, arguments) => { }));
             Handlebars.Compile(source);
         }
 
@@ -130,11 +130,11 @@ namespace HandlebarsDotNet.Test
                 }
             };
 
-            Handlebars.RegisterHelper("link_to", (writer, context, parameters) => {
+            Handlebars.RegisterHelper("link_to", (writer, root, context, parameters) => {
                 writer.WriteSafeString("<a href='" + parameters[0] + "'>" + parameters[1] + "</a>");
             });
 
-            Handlebars.RegisterHelper("block_helper", (writer, options, context, arguments) => {
+            Handlebars.RegisterHelper("block_helper", (writer, root, options, context, arguments) => {
                 foreach(var item in arguments[0] as IEnumerable)
                 {
                     options.Template(writer, item);

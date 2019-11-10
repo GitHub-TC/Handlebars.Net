@@ -12,7 +12,7 @@ namespace HandlebarsDotNet.Test
             var inst = Handlebars.Create();
             var source = "{{{{rawBlockHelper}}}} {{foo}} {{{foo}}}{{{{otherRawBlockHelper}}}} {{ bar }}{{{bar}}}{{{{/otherRawBlockHelper}}}}{{{{/rawBlockHelper}}}}";
 
-            inst.RegisterHelper("rawBlockHelper", (writer, options, context, arguments) => {
+            inst.RegisterHelper("rawBlockHelper", (writer, root, options, context, arguments) => {
                 options.Template(writer, null);
             });
 
@@ -37,7 +37,7 @@ namespace HandlebarsDotNet.Test
             var inst = Handlebars.Create();
             var source = "{{{{rawBlockHelper foo bar=bar}}}} {{foo}} {{{foo}}}{{{{otherRawBlockHelper}}}} {{ bar }}{{{bar}}}{{{{/otherRawBlockHelper}}}}{{{{/rawBlockHelper}}}}";
 
-            inst.RegisterHelper("rawBlockHelper", (writer, options, context, arguments) => {
+            inst.RegisterHelper("rawBlockHelper", (writer, root, options, context, arguments) => {
                 writer.Write(arguments[0]);
                 options.Template(writer, null);
                 writer.Write((arguments[1] as IDictionary<string, object>)["bar"]);
@@ -65,7 +65,7 @@ namespace HandlebarsDotNet.Test
             var inst = Handlebars.Create();
             var source = "{{{{rawBlockHelper html}}}} {{ foo }} {{{{/rawBlockHelper}}}}";
 
-            inst.RegisterHelper("rawBlockHelper", (writer, options, context, arguments) => {
+            inst.RegisterHelper("rawBlockHelper", (writer, root, options, context, arguments) => {
                 writer.Write(arguments[0]);
                 options.Template(writer, null);
             });
@@ -86,7 +86,7 @@ namespace HandlebarsDotNet.Test
             var inst = Handlebars.Create();
             var source = "{{{{rawBlockHelper html foo=html}}}} {{ foo }} {{{{/rawBlockHelper}}}}";
 
-            inst.RegisterHelper("rawBlockHelper", (writer, options, context, arguments) => {
+            inst.RegisterHelper("rawBlockHelper", (writer, root, options, context, arguments) => {
                 writer.Write(arguments[0]);
                 options.Template(writer, null);
                 writer.Write((arguments[1] as IDictionary<string, object>)["foo"]);
@@ -108,7 +108,7 @@ namespace HandlebarsDotNet.Test
             var inst = Handlebars.Create();
             var source = "{{{{rawBlockHelper}}}}{{someHelper fooArg fooHashArg='foo' fooHashArgDoubleQuote=\"foo!\" barHashArg=unquotedValue bazHashArg=@root.baz.nested}}{{{{/rawBlockHelper}}}}";
 
-            inst.RegisterHelper("rawBlockHelper", (writer, options, context, arguments) => {
+            inst.RegisterHelper("rawBlockHelper", (writer, root, options, context, arguments) => {
                 options.Template(writer, null);
             });
 
@@ -124,11 +124,11 @@ namespace HandlebarsDotNet.Test
             var inst = Handlebars.Create();
             var source = "{{{{rawBlockHelper}}}}{{someHelper fooArg fooHashArg='foo' fooHashArgDoubleQuote=\"foo!\" barHashArg=unquotedValue bazHashArg=@root.baz.nested}}{{{{/rawBlockHelper}}}}";
 
-            inst.RegisterHelper("rawBlockHelper", (writer, options, context, arguments) => {
+            inst.RegisterHelper("rawBlockHelper", (writer, root, options, context, arguments) => {
                 options.Template(writer, null);
             });
 
-            inst.RegisterHelper("someHelper", (writer, context, parameters) =>
+            inst.RegisterHelper("someHelper", (writer, root, context, parameters) =>
             {
                 throw new Exception("If this gets called, something went terribly wrong.");
             });
@@ -144,7 +144,7 @@ namespace HandlebarsDotNet.Test
         {
             var inst = Handlebars.Create();
 
-            inst.RegisterHelper("rawBlockHelper", (writer, options, context, arguments) => {
+            inst.RegisterHelper("rawBlockHelper", (writer, root, options, context, arguments) => {
                 writer.Write(arguments[0]);
                 options.Template(writer, null);
                 writer.Write((arguments[1] as IDictionary<string, object>)["bar"]);

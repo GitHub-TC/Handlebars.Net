@@ -28,13 +28,14 @@ namespace HandlebarsDotNet.Compiler
             HandlebarsHelper helper = GetHelperDelegateFromMethodCallExpression(helperCall);
             return Expression.Call(
 #if netstandard
-                new Func<HandlebarsHelper, object, object[], string>(CaptureTextWriterOutputFromHelper).GetMethodInfo(),
+                new Func<HandlebarsHelper, object, object, object[], string>(CaptureTextWriterOutputFromHelper).GetMethodInfo(),
 #else
-                new Func<HandlebarsHelper, object, object[], string>(CaptureTextWriterOutputFromHelper).Method,
+                new Func<HandlebarsHelper, object, object, object[], string>(CaptureTextWriterOutputFromHelper).Method,
 #endif
                 Expression.Constant(helper),
                 Visit(helperCall.Arguments[1]),
-                Visit(helperCall.Arguments[2]));
+                Visit(helperCall.Arguments[2]),
+                Visit(helperCall.Arguments[3]));
         }
 
         private static HandlebarsHelper GetHelperDelegateFromMethodCallExpression(MethodCallExpression helperCall)
@@ -70,13 +71,14 @@ namespace HandlebarsDotNet.Compiler
 
         private static string CaptureTextWriterOutputFromHelper(
             HandlebarsHelper helper,
+            object root,
             object context,
             object[] arguments)
         {
             var builder = new StringBuilder();
             using (var writer = new StringWriter(builder))
             {
-                helper(writer, context, arguments);
+                helper(writer, root, context, arguments);
             }
             return builder.ToString();
         }

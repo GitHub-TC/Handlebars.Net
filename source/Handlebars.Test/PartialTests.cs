@@ -188,7 +188,7 @@ namespace HandlebarsDotNet.Test
         {
             string source = "Hello, {{>person first=(_ first arg1=(_ \"value\")) last=(_ last)}}!";
 
-            Handlebars.RegisterHelper("_", (output, context, arguments) =>
+            Handlebars.RegisterHelper("_", (output, root, context, arguments) =>
             {
                 output.Write(arguments[0].ToString());
 
@@ -234,7 +234,7 @@ namespace HandlebarsDotNet.Test
         {
             string source = "Hello, {{> (partialNameHelper)}}!";
 
-            Handlebars.RegisterHelper("partialNameHelper", (writer, context, args) =>
+            Handlebars.RegisterHelper("partialNameHelper", (writer, root, context, args) =>
             {
                 writer.WriteSafeString("partialName");
             });
@@ -256,7 +256,7 @@ namespace HandlebarsDotNet.Test
         {
             string source = "Hello, {{> (concat 'par' 'tial' item1='Na' item2='me')}}!";
 
-            Handlebars.RegisterHelper("concat", (writer, context, args) =>
+            Handlebars.RegisterHelper("concat", (writer, root, context, args) =>
             {
                 var hash = args[2] as Dictionary<string, object>;
                 writer.WriteSafeString(string.Concat(args[0], args[1], hash["item1"], hash["item2"]));
@@ -279,7 +279,7 @@ namespace HandlebarsDotNet.Test
         {
             var source = "Hello, {{> (lookup name) context }}!";
 
-            Handlebars.RegisterHelper("lookup", (output, context, arguments) =>
+            Handlebars.RegisterHelper("lookup", (output, root, context, arguments) =>
             {
                 output.WriteSafeString(arguments[0]);
             });
@@ -311,7 +311,7 @@ namespace HandlebarsDotNet.Test
         {
             var source = "Hello, {{> (lookup name) first='Marc' last='Smith' }}!";
 
-            Handlebars.RegisterHelper("lookup", (output, context, arguments) =>
+            Handlebars.RegisterHelper("lookup", (output, root, context, arguments) =>
             {
                 output.WriteSafeString(arguments[0]);
             });
@@ -444,7 +444,7 @@ namespace HandlebarsDotNet.Test
                 lastName = "Jones",
             };
 
-            Handlebars.RegisterHelper("block", (writer, options, context, parameters) =>
+            Handlebars.RegisterHelper("block", (writer, root, options, context, parameters) =>
                 options.Template(writer, context));
 
             var partialSource = "{{#block}}{{title}} {{firstName}} {{lastName}}{{/block}}";

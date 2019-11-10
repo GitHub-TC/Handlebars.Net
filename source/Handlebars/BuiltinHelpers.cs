@@ -9,7 +9,7 @@ namespace HandlebarsDotNet
     internal static class BuiltinHelpers
     {
         [Description("with")]
-        public static void With(TextWriter output, HelperOptions options, dynamic context, params object[] arguments)
+        public static void With(TextWriter output, object root, HelperOptions options, dynamic context, params object[] arguments)
         {
             if (arguments.Length != 1)
             {
@@ -27,7 +27,7 @@ namespace HandlebarsDotNet
         }
 
         [Description("*inline")]
-        public static void Inline(TextWriter output, HelperOptions options, dynamic context, params object[] arguments)
+        public static void Inline(TextWriter output, object root, HelperOptions options, dynamic context, params object[] arguments)
         {
             if (arguments.Length != 1)
             {

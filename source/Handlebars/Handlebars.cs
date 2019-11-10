@@ -3,8 +3,8 @@ using System.IO;
 
 namespace HandlebarsDotNet
 {
-    public delegate void HandlebarsHelper(TextWriter output, dynamic context, params object[] arguments);
-    public delegate void HandlebarsBlockHelper(TextWriter output, HelperOptions options, dynamic context, params object[] arguments);
+    public delegate void HandlebarsHelper     (TextWriter output, object root, dynamic context, params object[] arguments);
+    public delegate void HandlebarsBlockHelper(TextWriter output, object root, HelperOptions options, dynamic context, params object[] arguments);
 
     public sealed partial class Handlebars
     {

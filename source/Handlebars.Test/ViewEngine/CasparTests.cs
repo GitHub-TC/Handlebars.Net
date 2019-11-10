@@ -68,15 +68,15 @@ namespace HandlebarsDotNet.Test.ViewEngine
         private static void AddHelpers(IHandlebars handlebars)
         {
             handlebars.RegisterHelper("asset",
-                (writer, context, arguments) => writer.Write("asset:" + string.Join("|", arguments)));
+                (writer, root, context, arguments) => writer.Write("asset:" + string.Join("|", arguments)));
             handlebars.RegisterHelper("date",
-                (writer, context, arguments) => writer.Write("date:" + string.Join("|", arguments)));
+                (writer, root, context, arguments) => writer.Write("date:" + string.Join("|", arguments)));
             handlebars.RegisterHelper("tags",
-                (writer, context, arguments) => writer.Write("tags:" + string.Join("|", arguments)));
+                (writer, root, context, arguments) => writer.Write("tags:" + string.Join("|", arguments)));
             handlebars.RegisterHelper("encode",
-                (writer, context, arguments) => writer.Write("encode:" + string.Join("|", arguments)));
-            handlebars.RegisterHelper("url", (writer, context, arguments) => writer.Write("url:" + string.Join("|", arguments)));
-            handlebars.RegisterHelper("excerpt", (writer, context, arguments) => writer.Write("url:" + string.Join("|", arguments)));
+                (writer, root, context, arguments) => writer.Write("encode:" + string.Join("|", arguments)));
+            handlebars.RegisterHelper("url", (writer, root, context, arguments) => writer.Write("url:" + string.Join("|", arguments)));
+            handlebars.RegisterHelper("excerpt", (writer, root, context, arguments) => writer.Write("url:" + string.Join("|", arguments)));
         }
 #if !netstandard
         [Fact]
@@ -105,12 +105,12 @@ namespace HandlebarsDotNet.Test.ViewEngine
         public void CanRenderCasparIndexTemplateWithStaticInstance()
         {
 
-            Handlebars.RegisterHelper("asset", (writer, context, arguments) => writer.Write("asset:" + string.Join("|", arguments)));
-            Handlebars.RegisterHelper("date", (writer, context, arguments) => writer.Write("date:" + string.Join("|", arguments)));
-            Handlebars.RegisterHelper("tags", (writer, context, arguments) => writer.Write("tags:" + string.Join("|", arguments)));
-            Handlebars.RegisterHelper("encode", (writer, context, arguments) => writer.Write("encode:" + string.Join("|", arguments)));
-            Handlebars.RegisterHelper("url", (writer, context, arguments) => writer.Write("url:" + string.Join("|", arguments)));
-            Handlebars.RegisterHelper("excerpt", (writer, context, arguments) => writer.Write("url:" + string.Join("|", arguments)));
+            Handlebars.RegisterHelper("asset", (writer, root, context, arguments) => writer.Write("asset:" + string.Join("|", arguments)));
+            Handlebars.RegisterHelper("date", (writer, root, context, arguments) => writer.Write("date:" + string.Join("|", arguments)));
+            Handlebars.RegisterHelper("tags", (writer, root, context, arguments) => writer.Write("tags:" + string.Join("|", arguments)));
+            Handlebars.RegisterHelper("encode", (writer, root, context, arguments) => writer.Write("encode:" + string.Join("|", arguments)));
+            Handlebars.RegisterHelper("url", (writer, root, context, arguments) => writer.Write("url:" + string.Join("|", arguments)));
+            Handlebars.RegisterHelper("excerpt", (writer, root, context, arguments) => writer.Write("url:" + string.Join("|", arguments)));
 
             Handlebars.Configuration.FileSystem = new DiskFileSystem();
 

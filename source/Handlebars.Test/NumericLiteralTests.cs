@@ -8,7 +8,7 @@ namespace HandlebarsDotNet.Test
     {
         public NumericLiteralTests()
         {
-            Handlebars.RegisterHelper("numericLiteralAdd", (writer, context, args) =>
+            Handlebars.RegisterHelper("numericLiteralAdd", (writer, root, context, args) =>
                 {
                     args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                     writer.Write(args.Aggregate(0, (a, i) => a + (int)i));

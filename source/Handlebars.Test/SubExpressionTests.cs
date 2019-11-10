@@ -12,11 +12,11 @@ namespace HandlebarsDotNet.Test
         {
             var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
             var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(helperName, (writer, root, context, args) => {
                 writer.Write("Hello " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(subHelperName, (writer, root, context, args) => {
                 writer.Write("world");
             });
 
@@ -36,11 +36,11 @@ namespace HandlebarsDotNet.Test
         {
             var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
             var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(helperName, (writer, root, context, args) => {
                 writer.Write("Outer " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(subHelperName, (writer, root, context, args) => {
                 writer.Write("Inner " + args[0]);
             });
 
@@ -60,11 +60,11 @@ namespace HandlebarsDotNet.Test
         {
             var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
             var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(helperName, (writer, root, context, args) => {
                 writer.Write("Outer " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(subHelperName, (writer, root, context, args) => {
                 var hash = args[0] as Dictionary<string, object>;
                 writer.Write("Inner " + hash["item1"] + "-" + hash["item2"]);
             });
@@ -85,11 +85,11 @@ namespace HandlebarsDotNet.Test
         {
             var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
             var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(helperName, (writer, root, context, args) => {
                 writer.Write("Math " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(subHelperName, (writer, root, context, args) => {
                 args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                 writer.Write((int)args[0] + (int)args[1]);
             });
@@ -110,11 +110,11 @@ namespace HandlebarsDotNet.Test
         {
             var helperName = "helper-" + Guid.NewGuid().ToString(); //randomize helper name
             var subHelperName = "subhelper-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(helperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(helperName, (writer, root, context, args) => {
                 writer.Write("Outer " + args[0]);
             });
 
-            Handlebars.RegisterHelper(subHelperName, (writer, context, args) => {
+            Handlebars.RegisterHelper(subHelperName, (writer, root, context, args) => {
                 writer.Write("Inner " + args[0]);
             });
 
@@ -136,11 +136,11 @@ namespace HandlebarsDotNet.Test
         {
             var mathHelper = "math-" + Guid.NewGuid().ToString(); //randomize helper name
             var addHelper = "add-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(mathHelper, (writer, context, args) => {
+            Handlebars.RegisterHelper(mathHelper, (writer, root, context, args) => {
                 writer.Write("Math " + args[0] + " " + args[1]);
             });
 
-            Handlebars.RegisterHelper(addHelper, (writer, context, args) => {
+            Handlebars.RegisterHelper(addHelper, (writer, root, context, args) => {
                 args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                 writer.Write((int)args[0] + (int)args[1]);
             });
@@ -161,11 +161,11 @@ namespace HandlebarsDotNet.Test
         {
             var writeHelper = "write-" + Guid.NewGuid().ToString(); //randomize helper name
             var addHelper = "add-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(writeHelper, (writer, context, args) => {
+            Handlebars.RegisterHelper(writeHelper, (writer, root, context, args) => {
                 writer.Write(args[0] + " " + args[1]);
             });
 
-            Handlebars.RegisterHelper(addHelper, (writer, context, args) => {
+            Handlebars.RegisterHelper(addHelper, (writer, root, context, args) => {
                 args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                 writer.Write((int)args[0] + (int)args[1]);
             });
@@ -186,11 +186,11 @@ namespace HandlebarsDotNet.Test
         {
             var writeHelper = "write-" + Guid.NewGuid().ToString(); //randomize helper name
             var addHelper = "add-" + Guid.NewGuid().ToString(); //randomize helper name
-            Handlebars.RegisterHelper(writeHelper, (writer, context, args) => {
+            Handlebars.RegisterHelper(writeHelper, (writer, root, context, args) => {
                 writer.Write(args[0]);
             });
 
-            Handlebars.RegisterHelper(addHelper, (writer, context, args) => {
+            Handlebars.RegisterHelper(addHelper, (writer, root, context, args) => {
                 args = args.Select(a => (object)int.Parse((string)a)).ToArray();
                 writer.Write((int)args[0] + (int)args[1]);
             });
