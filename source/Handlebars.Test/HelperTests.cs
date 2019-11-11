@@ -145,6 +145,37 @@ namespace HandlebarsDotNet.Test
             Assert.Equal(expectedIsDifferent, outputIsDifferent);
         }
 
+        class RootData
+        {
+            public int Number { get; set; }
+            public int GetTicksCounter() => new Random().Next(17, 42);
+        }
+
+        [Fact]
+        public void BlockHelperRootAccess()
+        {
+            var source = "...{{testhandler 1}}...";
+
+            var rootTestData = new RootData
+                {
+                    Number = 17
+                };
+
+            Handlebars.RegisterHelper("testhandler", (writer, root, context, arguments) => {
+                Assert.True(root == rootTestData);
+                var rootData = root as RootData;
+
+                writer.Write(int.Parse(arguments[0].ToString()) * rootData.GetTicksCounter());
+            });
+
+            var template = Handlebars.Compile(source);
+
+            var output = template(rootTestData);
+
+            Assert.StartsWith("...", output);
+            Assert.EndsWith("...", output);
+        }
+
         [Fact]
         public void BlockHelperWithArbitraryInversionAndComplexOperator()
         {
