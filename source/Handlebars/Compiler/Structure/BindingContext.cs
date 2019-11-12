@@ -9,6 +9,7 @@ namespace HandlebarsDotNet.Compiler
     {
         private readonly object _value;
         private readonly BindingContext _parent;
+        private readonly Lazy<object> _Root;
 
         public string TemplatePath { get; private set; }
 
@@ -36,6 +37,17 @@ namespace HandlebarsDotNet.Compiler
             TextWriter = writer;
             _value = value;
             _parent = parent;
+
+            _Root = new Lazy<object>(() =>
+                {   
+                    var currentContext = this;
+                    while (currentContext.ParentContext != null)
+                    {
+                        currentContext = currentContext.ParentContext;
+                    }
+                    return currentContext.Value;
+                }
+            );
 
             //Inline partials cannot use the Handlebars.RegisteredTemplate method
             //because it pollutes the static dictionary and creates collisions
@@ -80,18 +92,7 @@ namespace HandlebarsDotNet.Compiler
             get { return _parent; }
         }
 
-        public virtual object Root
-        {
-            get
-            {
-                var currentContext = this;
-                while (currentContext.ParentContext != null)
-                {
-                    currentContext = currentContext.ParentContext;
-                }
-                return currentContext.Value;
-            }
-        }
+        public virtual object Root => _Root.Value;
 
         public virtual object GetContextVariable(string variableName)
         {
